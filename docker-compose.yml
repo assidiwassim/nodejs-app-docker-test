@@ -1,0 +1,13 @@
+version: '3.9'  # Docker Compose version being used
+name: docker-workshop-stack  # name of the Docker stack
+
+services:
+
+  nodejs-app:  # Service named 'nodejs-app'
+    container_name: nodejs-app-container  # Custom name for the app container
+    restart: always  # Restart policy for the app container
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:  # Ports to expose for the app container
+      - '3001:3000'  # Map port 3000 of the container to port 3001 on the host
