@@ -1,13 +1,39 @@
-version: '3.9'  # Docker Compose version being used
-name: docker-workshop-stack  # name of the Docker stack
+version: '3.9'  
+name: docker-workshop 
 
 services:
 
-  nodejs-app:  # Service named 'nodejs-app'
-    container_name: nodejs-app-container  # Custom name for the app container
-    restart: always  # Restart policy for the app container
+  nodejs-service: 
+    container_name: nodejs  
+    restart: always  
     build: 
       context: .
       dockerfile: Dockerfile
-    ports:  # Ports to expose for the app container
-      - '3001:3000'  # Map port 3000 of the container to port 3001 on the host
+    ports: 
+      - '3001:3000' 
+   # volumes:
+     # - .:/my-app
+    networks: 
+      - my-network-1
+    depends_on:
+      - mongodb-service
+
+  mongodb-service:
+    container_name: mongodb
+    image: mongo:latest
+    restart: always
+    ports:  
+      - '27018:27017'  
+    volumes:
+      - mongodb-volume:/data/db
+    networks: 
+      - my-network-1
+
+networks:
+
+  my-network-1:  
+    driver: bridge  
+
+volumes:
+
+  mongodb-volume:
